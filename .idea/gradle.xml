@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/SlidingMenu_library" />
+            <option value="$PROJECT_DIR$/Swagger" />
             <option value="$PROJECT_DIR$/android-client" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/pullToRefresh_library" />
@@ -18,6 +19,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/SlidingMenu_library" />
+            <option value="$PROJECT_DIR$/Swagger" />
             <option value="$PROJECT_DIR$/android-client" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/pullToRefresh_library" />

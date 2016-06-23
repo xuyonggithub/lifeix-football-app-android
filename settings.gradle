@@ -1,1 +1,1 @@
-include ':app', ':SlidingMenu_library', ':android-client', ':pullToRefresh_library'
+include ':app', ':SlidingMenu_library', ':android-client', ':pullToRefresh_library', 'Swagger'
