@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!--<View-->
+        <!--android:layout_width="15dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/red"/>-->
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="55dp">
+
+        <ImageView
+            android:id="@+id/img_item_left_menu"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+
+        <TextView
+            android:id="@+id/catagory_item_left_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="中国女足"
+            android:layout_gravity="center"
+            android:paddingLeft="15dp"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

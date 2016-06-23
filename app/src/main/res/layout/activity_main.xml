@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/red">
+
+        <LinearLayout
+            android:id="@+id/ll_activity_main"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/ll_background_selector"
+            android:clickable="true">
+
+            <ImageButton
+                android:id="@+id/ib_activity_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/list_left" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title_activity_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="中国足球网"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<ProgressBar-->
+            <!--android:id="@+id/pb_activity_main"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center" />-->
+    </FrameLayout>
+</LinearLayout>
