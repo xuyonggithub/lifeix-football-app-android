@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/id_left_menu"
         android:name="com.l99.chinafootball.fragment.MenuLeftFragment"
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
         android:tag="LEFT" />
