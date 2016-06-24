@@ -35,6 +35,10 @@ public class LeftMenuFragment extends BaseFragment {
 
     private LeftMenuListViewAdapter adapter;
 
+    void LeftMenuFragment() {
+
+    }
+
     /**
      * 被点击的item的位置
      */
