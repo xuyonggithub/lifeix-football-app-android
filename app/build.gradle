@@ -43,7 +43,6 @@ android {
         compile 'com.android.support:appcompat-v7:23.3.0'
         compile 'com.android.support:support-v4:23.2.1'
         compile project(':android-client')
-        compile project(':SlidingMenu_library')
         compile files('libs/glide-3.6.1.jar')
         compile files('libs/nineoldandroids-2.4.0.jar')
         compile files('libs/eventbus.jar')

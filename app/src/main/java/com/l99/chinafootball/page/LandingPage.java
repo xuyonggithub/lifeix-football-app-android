@@ -8,7 +8,6 @@ import android.os.Message;
 import android.widget.ImageView;
 
 import com.l99.chinafootball.R;
-import com.l99.chinafootball.activity.MainActivity;
 import com.l99.chinafootball.activity.NewMainActivity;
 
 public class LandingPage extends Activity {

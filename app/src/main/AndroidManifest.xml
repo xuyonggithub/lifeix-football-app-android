@@ -21,9 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
             android:name=".page.LandingPage"
             android:screenOrientation="portrait">
             <intent-filter>
