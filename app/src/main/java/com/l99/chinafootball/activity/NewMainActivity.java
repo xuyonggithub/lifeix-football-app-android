@@ -1,5 +1,6 @@
 package com.l99.chinafootball.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -99,6 +100,7 @@ public class NewMainActivity extends FragmentActivity {
     private void initView()
     {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawerLayout);
+        mDrawerLayout.setScrimColor(Color.TRANSPARENT);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
                 Gravity.RIGHT);
     }
