@@ -61,9 +61,7 @@ public class MainActivity extends Activity {
             }
         }.start();
 */
-        new Thread(){
-            @Override
-            public void run() {
+
                 MenuApi menuApi = null;
                 try {
                     menuApi = new MenuApi();
@@ -96,9 +94,5 @@ public class MainActivity extends Activity {
                 } catch (ApiException e) {
                     e.printStackTrace();
                 }
-
-            }
-        }.start();
-
     }
 }
