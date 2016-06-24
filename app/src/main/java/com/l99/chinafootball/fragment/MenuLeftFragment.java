@@ -8,11 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
+import com.l99.chinafootball.activity.NewMainActivity;
 import com.l99.chinafootball.adapter.LeftMenuListViewAdapter;
 import com.l99.chinafootball.utils.Url;
 
@@ -25,8 +27,7 @@ import io.swagger.client.ApiInvoker;
 import io.swagger.client.api.MenuApi;
 import io.swagger.client.model.Menu;
 
-public class MenuLeftFragment extends Fragment
-{
+public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private ListView mListView;
     private LeftMenuListViewAdapter adapter;
 
@@ -48,7 +49,9 @@ public class MenuLeftFragment extends Fragment
         //设置把选择某条的时候，没有任何颜色变化
         mListView.setSelector(android.R.color.transparent);
 
-
+        adapter = new LeftMenuListViewAdapter();
+        mListView.setAdapter(adapter);
+/*
 		MenuApi menuApi = null;
 		try {
 			menuApi = new MenuApi();
@@ -61,6 +64,7 @@ public class MenuLeftFragment extends Fragment
 						List<Menu> list = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
                         adapter = new LeftMenuListViewAdapter(getActivity(), list, 0);
                         mListView.setAdapter(adapter);
+                        mListView.setOnItemSelectedListener(MenuLeftFragment.this);
 					} catch (ApiException e) {
 						e.printStackTrace();
 					}
@@ -81,6 +85,21 @@ public class MenuLeftFragment extends Fragment
 			e.printStackTrace();
 		} catch (ApiException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void setData(List<Menu> data) {
+        adapter.setData(data);
+        adapter.notifyDataSetChanged();
+    }
 }

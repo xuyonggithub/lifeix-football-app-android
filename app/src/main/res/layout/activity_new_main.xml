@@ -22,7 +22,7 @@
     </RelativeLayout>
 
     <fragment
-        android:id="@+id/id_left_menu"
+        android:id="@+id/fg_left_menu"
         android:name="com.l99.chinafootball.fragment.MenuLeftFragment"
         android:layout_width="220dp"
         android:layout_height="match_parent"
@@ -30,7 +30,7 @@
         android:tag="LEFT" />
 
     <fragment
-        android:id="@+id/id_right_menu"
+        android:id="@+id/fg_right_menu"
         android:name="com.l99.chinafootball.fragment.MenuLeftFragment"
         android:layout_width="100dp"
         android:layout_height="match_parent"

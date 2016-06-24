@@ -2,6 +2,7 @@ package com.l99.chinafootball.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -9,11 +10,28 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
+import com.l99.chinafootball.adapter.LeftMenuListViewAdapter;
+import com.l99.chinafootball.fragment.MenuLeftFragment;
+import com.l99.chinafootball.utils.Url;
 import com.nineoldandroids.view.ViewHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
+import io.swagger.client.ApiException;
+import io.swagger.client.ApiInvoker;
+import io.swagger.client.api.MenuApi;
+import io.swagger.client.model.Menu;
 
 public class NewMainActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
+    List<Menu> mMenuData;
+    private MenuLeftFragment mLeftMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +41,42 @@ public class NewMainActivity extends FragmentActivity {
 
         initView();
         initEvents();
+        loadMenuData();
+    }
+
+    private void loadMenuData() {
+        MenuApi menuApi = null;
+        try {
+            menuApi = new MenuApi();
+            menuApi.setBasePath(Url.COMMEN_URL);
+            menuApi.getMenuListAsync(new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        Log.i("async", response);
+                        mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
+                        mLeftMenu.setData(mMenuData);
+                    } catch (ApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            },"visitor", "app");
+
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
     }
 
     public void OpenRightMenu(View view)
@@ -31,8 +85,6 @@ public class NewMainActivity extends FragmentActivity {
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED,
                 Gravity.RIGHT);
     }
-
-
 
     private void initEvents()
     {
@@ -67,8 +119,6 @@ public class NewMainActivity extends FragmentActivity {
                     mContent.invalidate();
                     ViewHelper.setScaleX(mContent, rightScale);
                     ViewHelper.setScaleY(mContent, rightScale);
-                    Log.i("scale", "slideoffset " + slideOffset + " leftScale "  + leftScale
-                        + " rightScale " + rightScale);
                 } else
                 {
                     ViewHelper.setTranslationX(mContent,
@@ -103,5 +153,11 @@ public class NewMainActivity extends FragmentActivity {
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
                 Gravity.RIGHT);
+
+        mLeftMenu = (MenuLeftFragment) getSupportFragmentManager().findFragmentById(R.id.fg_left_menu);
+    }
+
+    public List<Menu> getMenuData() {
+        return mMenuData;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.l99.chinafootball.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.client.model.Menu;
@@ -19,14 +20,9 @@ import io.swagger.client.model.Menu;
  */
 public class LeftMenuListViewAdapter extends BaseAdapter {
 
-    private Context context;
-    private List<Menu> menuList;
-    private int selectPosition;
+    private List<Menu> menuList = new ArrayList<Menu>();
 
-    public LeftMenuListViewAdapter(Context context, List<Menu> menuList, int selectPosition) {
-        this.context = context;
-        this.menuList = menuList;
-        this.selectPosition = selectPosition;
+    public LeftMenuListViewAdapter() {
     }
 
     @Override
@@ -44,12 +40,17 @@ public class LeftMenuListViewAdapter extends BaseAdapter {
         return position;
     }
 
+    public void setData(List<Menu> data) {
+        menuList.clear();
+        menuList.addAll(data);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if(convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = View.inflate(context, R.layout.item_left_menu,null);
+            convertView = View.inflate(parent.getContext(), R.layout.item_left_menu,null);
             viewHolder.imageView = (ImageView) convertView.findViewById(R.id.img_item_left_menu);
             viewHolder.textView = (TextView) convertView.findViewById(R.id.catagory_item_left_menu);
             convertView.setTag(viewHolder);
@@ -57,21 +58,17 @@ public class LeftMenuListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Glide.with(context).load(menuList.get(position).getIconUrl()).into(viewHolder.imageView);
-        if(selectPosition == position) {
+        Glide.with(parent.getContext()).load(menuList.get(position).getIconUrl()).into(viewHolder.imageView);
+/*        if(selectPosition == position) {
             viewHolder.textView.setTextColor(context.getResources().getColor(R.color.red));
         }else {
             viewHolder.textView.setTextColor(context.getResources().getColor(R.color.dark_gray));
-        }
+        }*/
         viewHolder.textView.setText(menuList.get(position).getName());
 
         return convertView;
     }
 
-    public void setSelectPosition(int selectPosition) {
-        this.selectPosition = selectPosition;
-        notifyDataSetChanged();
-    }
 
     class ViewHolder {
         ImageView imageView;
