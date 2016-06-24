@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Logger;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiInvoker;
@@ -36,12 +37,14 @@ public class NewMainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_new_main);
 
         initView();
         initEvents();
         loadMenuData();
+
     }
 
     private void loadMenuData() {

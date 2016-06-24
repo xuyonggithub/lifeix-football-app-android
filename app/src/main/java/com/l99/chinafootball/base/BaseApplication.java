@@ -3,6 +3,8 @@ package com.l99.chinafootball.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.orhanobut.logger.Logger;
+
 import io.swagger.client.ApiInvoker;
 
 /**
@@ -10,7 +12,6 @@ import io.swagger.client.ApiInvoker;
  *
  */
 public class BaseApplication extends Application {
-
 
 	public static Context sContext;
 
@@ -21,6 +22,8 @@ public class BaseApplication extends Application {
 		sContext = getApplicationContext();
 		ApiInvoker.initializeInstance();
 //		SMSSDK.initSDK(this, "1362441d82828", "27d21be7415d50847e6eb803b780fab6");
+		Logger.init(this.getApplicationInfo().packageName);
+		Logger.d("Application");
 
 	}
 

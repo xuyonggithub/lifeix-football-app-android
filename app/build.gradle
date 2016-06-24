@@ -47,6 +47,7 @@ android {
         compile files('libs/nineoldandroids-2.4.0.jar')
         compile files('libs/eventbus.jar')
         compile project(':pullToRefresh_library')
+        compile 'com.orhanobut:logger:1.13'
     }
 
 }

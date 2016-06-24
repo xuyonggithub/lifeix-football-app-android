@@ -4,27 +4,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
-import com.l99.chinafootball.activity.NewMainActivity;
 import com.l99.chinafootball.adapter.LeftMenuListViewAdapter;
-import com.l99.chinafootball.utils.Url;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
-import io.swagger.client.ApiException;
-import io.swagger.client.ApiInvoker;
-import io.swagger.client.api.MenuApi;
 import io.swagger.client.model.Menu;
 
 public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -51,41 +41,6 @@ public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSele
 
         adapter = new LeftMenuListViewAdapter();
         mListView.setAdapter(adapter);
-/*
-		MenuApi menuApi = null;
-		try {
-			menuApi = new MenuApi();
-			menuApi.setBasePath(Url.COMMEN_URL);
-			menuApi.getMenuListAsync(new Response.Listener<String>() {
-				@Override
-				public void onResponse(String response) {
-					try {
-                        Log.i("async", response);
-						List<Menu> list = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
-                        adapter = new LeftMenuListViewAdapter(getActivity(), list, 0);
-                        mListView.setAdapter(adapter);
-                        mListView.setOnItemSelectedListener(MenuLeftFragment.this);
-					} catch (ApiException e) {
-						e.printStackTrace();
-					}
-				}
-			}, new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-
-				}
-			},"visitor", "app");
-
-		} catch (TimeoutException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ApiException e) {
-			e.printStackTrace();
-		}*/
 	}
 
     @Override
