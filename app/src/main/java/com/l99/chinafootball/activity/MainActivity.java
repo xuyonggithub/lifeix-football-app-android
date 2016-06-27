@@ -60,6 +60,7 @@ public class MainActivity extends FragmentActivity {
                         Log.i("async", response);
                         mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
                         //mLeftMenu.setData(mMenuData);
+                        mLeftMenu.addData(mMenuData.get(0), 0);
                     } catch (ApiException e) {
                         e.printStackTrace();
                     }

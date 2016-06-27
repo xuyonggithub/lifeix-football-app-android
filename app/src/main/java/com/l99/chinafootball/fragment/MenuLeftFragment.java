@@ -63,6 +63,11 @@ public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSele
         adapter.notifyDataSetChanged();
     }
 
+    public void addData(Menu menu, int position) {
+        adapter.addItem(menu, position);
+        adapter.notifyDataSetChanged();
+    }
+
     public void openFragment(Class<? extends Fragment> fragmentClass, Bundle arguments) {
         Fragment fragment = Fragment.instantiate(getActivity(), fragmentClass.getName(), arguments);
         ((MainActivity) getActivity()).switchContent(fragment);
