@@ -19,7 +19,7 @@ import java.util.List;
 
 import io.swagger.client.model.Menu;
 
-public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+public class MenuLeftFragment extends Fragment implements AdapterView.OnItemClickListener {
     private ListView mListView;
     private LeftMenuListViewAdapter adapter;
 
@@ -46,24 +46,8 @@ public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSele
         adapter.addItem(new MenuItem("资讯", "", NewsFragment.class, R.drawable.news));
 
         mListView.setAdapter(adapter);
-        mListView.setOnItemSelectedListener(this);
         mListView.setOnItemClickListener(this);
 	}
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Menu menu = (Menu) adapter.getItem(position);
-        if(menu instanceof MenuItem) {
-            openFragment(((MenuItem) menu).fragmentClass, null);
-        } else {
-            openFragment(HotFragment.class, null);
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     public void setData(List<Menu> data) {
         adapter.setData(data);
@@ -85,6 +69,7 @@ public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSele
         Menu menu = (Menu) adapter.getItem(position);
         if(menu instanceof MenuItem) {
             openFragment(((MenuItem) menu).fragmentClass, null);
+            ((MainActivity) getActivity()).setTitle(menu.getName());
         } else {
             openFragment(HotFragment.class, null);
         }

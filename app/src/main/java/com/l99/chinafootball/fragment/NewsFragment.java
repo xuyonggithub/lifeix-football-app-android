@@ -3,12 +3,31 @@ package com.l99.chinafootball.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
+import com.l99.chinafootball.adapter.NewsAdapter;
+import com.l99.chinafootball.utils.Url;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
+import io.swagger.client.ApiException;
+import io.swagger.client.ApiInvoker;
+import io.swagger.client.api.MenuApi;
+import io.swagger.client.model.Menu;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +48,10 @@ public class NewsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView mRvNews;
+    private List<Menu> mMenuData;
+    private NewsAdapter mAdapter;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -68,6 +91,21 @@ public class NewsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_news, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mAdapter = new NewsAdapter();
+        mRvNews = (RecyclerView) view.findViewById(R.id.rv_news);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+        mRvNews.setLayoutManager(layoutManager);
+        mRvNews.setHasFixedSize(true);
+        mRvNews.setItemAnimator(new DefaultItemAnimator());
+        mRvNews.setAdapter(mAdapter);
+
+        loadMenuData();
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -105,5 +143,42 @@ public class NewsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void loadMenuData() {
+        MenuApi menuApi = null;
+        try {
+            menuApi = new MenuApi();
+            menuApi.setBasePath(Url.COMMEN_URL);
+            menuApi.getMenuListAsync(new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        Log.i("async", response);
+                        mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
+                        //mLeftMenu.setData(mMenuData);
+                        mAdapter.setmData((ArrayList<Menu>) mMenuData);
+                        mAdapter.notifyDataSetChanged();
+                    } catch (ApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            },"visitor", "app");
+
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
     }
 }
