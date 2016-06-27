@@ -2,6 +2,7 @@ package com.l99.chinafootball.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -14,16 +15,13 @@ import android.view.Window;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
-import com.l99.chinafootball.adapter.LeftMenuListViewAdapter;
 import com.l99.chinafootball.fragment.MenuLeftFragment;
 import com.l99.chinafootball.utils.Url;
 import com.nineoldandroids.view.ViewHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiInvoker;
@@ -34,6 +32,7 @@ public class MainActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
     List<Menu> mMenuData;
     private MenuLeftFragment mLeftMenu;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,8 @@ public class MainActivity extends FragmentActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_new_main);
+
+        mHandler = new Handler();
 
         initView();
         initEvents();
@@ -175,10 +176,10 @@ public class MainActivity extends FragmentActivity {
             fm.beginTransaction().replace(R.id.content_frame, fragment).commitAllowingStateLoss();
         }
 
-/*        mHandler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             public void run() {
-                getSlidingMenu().showContent();
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
             }
-        }, 50);*/
+        }, 50);
     }
 }

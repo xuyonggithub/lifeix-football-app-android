@@ -13,4 +13,7 @@
 
     <string name="dynamicbox_exception_title">Error</string>
     <string name="dynamicbox_exception_message">An error has occurred, retry again</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
