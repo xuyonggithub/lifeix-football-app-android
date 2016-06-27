@@ -11,7 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.l99.chinafootball.R;
+import com.l99.chinafootball.activity.MainActivity;
 import com.l99.chinafootball.adapter.LeftMenuListViewAdapter;
+import com.l99.chinafootball.utils.MenuItem;
 
 import java.util.List;
 
@@ -40,6 +42,9 @@ public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSele
         mListView.setSelector(android.R.color.transparent);
 
         adapter = new LeftMenuListViewAdapter();
+
+        adapter.addItem(new MenuItem("资讯", "", R.drawable.news));
+
         mListView.setAdapter(adapter);
 	}
 
@@ -56,5 +61,10 @@ public class MenuLeftFragment extends Fragment implements AdapterView.OnItemSele
     public void setData(List<Menu> data) {
         adapter.setData(data);
         adapter.notifyDataSetChanged();
+    }
+
+    public void openFragment(Class<? extends Fragment> fragmentClass, Bundle arguments) {
+        Fragment fragment = Fragment.instantiate(getActivity(), fragmentClass.getName(), arguments);
+        ((MainActivity) getActivity()).switchContent(fragment);
     }
 }

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,7 +30,7 @@ import io.swagger.client.ApiInvoker;
 import io.swagger.client.api.MenuApi;
 import io.swagger.client.model.Menu;
 
-public class NewMainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
     List<Menu> mMenuData;
     private MenuLeftFragment mLeftMenu;
@@ -58,7 +59,7 @@ public class NewMainActivity extends FragmentActivity {
                     try {
                         Log.i("async", response);
                         mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
-                        mLeftMenu.setData(mMenuData);
+                        //mLeftMenu.setData(mMenuData);
                     } catch (ApiException e) {
                         e.printStackTrace();
                     }
@@ -162,5 +163,21 @@ public class NewMainActivity extends FragmentActivity {
 
     public List<Menu> getMenuData() {
         return mMenuData;
+    }
+
+    public void switchContent(final Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        try {
+            fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        } catch (Exception e) {
+            fm.beginTransaction().replace(R.id.content_frame, fragment).commitAllowingStateLoss();
+        }
+
+/*        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                getSlidingMenu().showContent();
+            }
+        }, 50);*/
     }
 }

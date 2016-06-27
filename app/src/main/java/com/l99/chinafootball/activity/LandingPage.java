@@ -17,7 +17,7 @@ public class LandingPage extends Activity {
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == ToMain) {
-                Intent intent = new Intent(LandingPage.this, NewMainActivity.class);
+                Intent intent = new Intent(LandingPage.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }

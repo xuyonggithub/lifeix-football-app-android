@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.l99.chinafootball.R;
+import com.l99.chinafootball.utils.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,14 @@ public class LeftMenuListViewAdapter extends BaseAdapter {
         menuList.addAll(data);
     }
 
+    public void addItem(Menu menu, int position) {
+        menuList.add(position, menu);
+    }
+
+    public void addItem(Menu menu) {
+        menuList.add(menu);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
@@ -58,7 +67,11 @@ public class LeftMenuListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Glide.with(parent.getContext()).load(menuList.get(position).getIconUrl()).into(viewHolder.imageView);
+        Menu item = menuList.get(position);
+        if(item instanceof MenuItem)
+            Glide.with(parent.getContext()).load(((MenuItem) item).drawableId).into(viewHolder.imageView);
+        else
+            Glide.with(parent.getContext()).load(item.getIconUrl()).into(viewHolder.imageView);
 /*        if(selectPosition == position) {
             viewHolder.textView.setTextColor(context.getResources().getColor(R.color.red));
         }else {

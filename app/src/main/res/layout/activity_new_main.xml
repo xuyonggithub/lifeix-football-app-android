@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="com.l99.chinafootball.activity.NewMainActivity">
+    tools:context=".activity.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +19,13 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/youce"
             android:onClick="OpenRightMenu" />
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
+
 
     <fragment
         android:id="@+id/fg_left_menu"
