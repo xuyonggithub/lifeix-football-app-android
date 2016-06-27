@@ -7,10 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,18 +32,25 @@ import io.swagger.client.ApiInvoker;
 import io.swagger.client.api.MenuApi;
 import io.swagger.client.model.Menu;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private DrawerLayout mDrawerLayout;
     List<Menu> mMenuData;
     private MenuLeftFragment mLeftMenu;
     private Handler mHandler;
+    private Button mBtnRightMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_new_main);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
         mHandler = new Handler();
 
@@ -85,7 +96,7 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public void OpenRightMenu(View view)
+    public void OpenRightMenu()
     {
         mDrawerLayout.openDrawer(Gravity.RIGHT);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED,
@@ -155,12 +166,14 @@ public class MainActivity extends FragmentActivity {
 
     private void initView()
     {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawerLayout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
                 Gravity.RIGHT);
 
         mLeftMenu = (MenuLeftFragment) getSupportFragmentManager().findFragmentById(R.id.fg_left_menu);
+        mBtnRightMenu = (Button) findViewById(R.id.btn_right_menu);
+        mBtnRightMenu.setOnClickListener(this);
     }
 
     public List<Menu> getMenuData() {
@@ -181,5 +194,16 @@ public class MainActivity extends FragmentActivity {
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
             }
         }, 50);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case  R.id.btn_right_menu:
+                OpenRightMenu();
+                break;
+            default:
+                break;
+        }
     }
 }
