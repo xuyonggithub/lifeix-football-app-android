@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 import com.android.volley.Response;
@@ -22,7 +20,6 @@ import com.l99.chinafootball.R;
 import com.l99.chinafootball.fragment.HotFragment;
 import com.l99.chinafootball.fragment.MenuLeftFragment;
 import com.l99.chinafootball.utils.Url;
-import com.l99.chinafootball.view.DynamicBox;
 import com.l99.chinafootball.view.StateView;
 import com.nineoldandroids.view.ViewHelper;
 

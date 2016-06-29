@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,7 +24,6 @@ import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.l99.chinafootball.R;
 import com.l99.chinafootball.adapter.NewsAdapter;
 import com.l99.chinafootball.utils.Url;
-import com.l99.chinafootball.view.DynamicBox;
 
 import java.util.ArrayList;
 import java.util.List;
