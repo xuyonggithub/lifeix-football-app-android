@@ -23,6 +23,7 @@ import com.l99.chinafootball.fragment.HotFragment;
 import com.l99.chinafootball.fragment.MenuLeftFragment;
 import com.l99.chinafootball.utils.Url;
 import com.l99.chinafootball.view.DynamicBox;
+import com.l99.chinafootball.view.StateView;
 import com.nineoldandroids.view.ViewHelper;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Handler mHandler;
     private Button mBtnRightMenu;
     private Toolbar mToolBar;
-    private DynamicBox mLoadingView;
+    private StateView mStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
                         //mLeftMenu.setData(mMenuData);
                         mLeftMenu.addData(mMenuData.get(0), 0);
-/*
-                        mLoadingView.hideAll();
-*/
+
+                        mStateView.setCurrentState(StateView.STATE_CONTENT);
+
                         Bundle bundle = new Bundle();
                         bundle.putString("title", mMenuData.get(0).getName());
                         bundle.putString("id", mMenuData.get(0).getId());
@@ -83,9 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-/*
-                    mLoadingView.showExceptionLayout();
-*/
+                    mStateView.setCurrentState(StateView.STATE_ERROR);
                 }
             },"visitor", "app");
 
@@ -180,6 +179,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        mStateView = (StateView) findViewById(R.id.mStateView);
+        mStateView.setCurrentState(StateView.STATE_LOADING);
+
         mHandler = new Handler();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
@@ -189,21 +191,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLeftMenu = (MenuLeftFragment) getSupportFragmentManager().findFragmentById(R.id.fg_left_menu);
         mBtnRightMenu = (Button) findViewById(R.id.btn_right_menu);
         mBtnRightMenu.setOnClickListener(this);
-
-/*        mLoadingView = new DynamicBox(this,R.id.content_frame);
-
-        // Setup my box
-        mLoadingView.setLoadingMessage("Loading content...");
-        mLoadingView.setOtherExceptionTitle("Error");
-        mLoadingView.setOtherExceptionMessage("An error has occurred while fetching data, please try again ...");
-        mLoadingView.setClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadMenuData();
-            }
-        });
-
-        mLoadingView.showLoadingLayout();*/
     }
 
     public List<Menu> getMenuData() {
