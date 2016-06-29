@@ -1,1 +1,1 @@
-include ':app', ':android-client', ':pullToRefresh_library', 'Swagger'
+include ':app', ':android-client', 'Swagger'

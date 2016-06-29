@@ -25,6 +25,7 @@ import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.l99.chinafootball.R;
 import com.l99.chinafootball.adapter.NewsAdapter;
 import com.l99.chinafootball.utils.Url;
+import com.l99.chinafootball.view.DynamicBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +57,12 @@ public class NewsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    PtrClassicFrameLayout ptrClassicFrameLayout;
+    private PtrClassicFrameLayout ptrClassicFrameLayout;
     private RecyclerView mRvNews;
     private List<Menu> mMenuData;
     private NewsAdapter adapter;
     private RecyclerAdapterWithHF mAdapter;
-    Handler handler = new Handler();
+    private Handler handler = new Handler();
 
     public NewsFragment() {
         // Required empty public constructor
@@ -105,6 +106,10 @@ public class NewsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initView(view);
+    }
+
+    private void initView(View view) {
         adapter = new NewsAdapter();
         mAdapter = new RecyclerAdapterWithHF(adapter);
         ptrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.test_recycler_view_frame);
@@ -142,6 +147,7 @@ public class NewsFragment extends Fragment {
                     }
                 }, 2000);
             }
+
         });
 
         ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -216,11 +222,13 @@ public class NewsFragment extends Fragment {
                         Log.i("async", response);
                         mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
                         //mLeftMenu.setData(mMenuData);
+
                         adapter.setmData((ArrayList<Menu>) mMenuData);
                         adapter.notifyDataSetChanged();
 
                         ptrClassicFrameLayout.refreshComplete();
                         ptrClassicFrameLayout.setLoadMoreEnable(true);
+
                     } catch (ApiException e) {
                         e.printStackTrace();
                     }
@@ -229,7 +237,8 @@ public class NewsFragment extends Fragment {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    ptrClassicFrameLayout.refreshComplete();
+                    ptrClassicFrameLayout.setLoadMoreEnable(true);
                 }
             },"visitor", "app");
 

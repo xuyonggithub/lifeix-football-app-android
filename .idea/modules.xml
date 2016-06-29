@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/android-client/android-client.iml" filepath="$PROJECT_DIR$/android-client/android-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lifeix-football-app-android.iml" filepath="$PROJECT_DIR$/lifeix-football-app-android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pullToRefresh_library/pullToRefresh_library.iml" filepath="$PROJECT_DIR$/pullToRefresh_library/pullToRefresh_library.iml" />
     </modules>
   </component>
 </project>

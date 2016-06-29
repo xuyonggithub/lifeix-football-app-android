@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$/Swagger" />
             <option value="$PROJECT_DIR$/android-client" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/pullToRefresh_library" />
           </set>
         </option>
         <option name="myModules">
@@ -20,7 +19,6 @@
             <option value="$PROJECT_DIR$/Swagger" />
             <option value="$PROJECT_DIR$/android-client" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/pullToRefresh_library" />
           </set>
         </option>
       </GradleProjectSettings>

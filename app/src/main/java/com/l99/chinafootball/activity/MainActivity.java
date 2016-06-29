@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
 import com.l99.chinafootball.fragment.MenuLeftFragment;
 import com.l99.chinafootball.utils.Url;
+import com.l99.chinafootball.view.DynamicBox;
 import com.nineoldandroids.view.ViewHelper;
 
 import java.util.List;
@@ -39,26 +40,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Handler mHandler;
     private Button mBtnRightMenu;
     private Toolbar mToolBar;
+    private DynamicBox mLoadingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolBar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        mHandler = new Handler();
 
         initView();
         initEvents();
         loadMenuData();
-
     }
 
     private void loadMenuData() {
@@ -74,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
                         //mLeftMenu.setData(mMenuData);
                         mLeftMenu.addData(mMenuData.get(0), 0);
+/*
+                        mLoadingView.hideAll();
+*/
                     } catch (ApiException e) {
                         e.printStackTrace();
                     }
@@ -82,7 +76,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+/*
+                    mLoadingView.showExceptionLayout();
+*/
                 }
             },"visitor", "app");
 
@@ -167,6 +163,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initView()
     {
+
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolBar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        mHandler = new Handler();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
@@ -175,6 +182,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLeftMenu = (MenuLeftFragment) getSupportFragmentManager().findFragmentById(R.id.fg_left_menu);
         mBtnRightMenu = (Button) findViewById(R.id.btn_right_menu);
         mBtnRightMenu.setOnClickListener(this);
+
+/*        mLoadingView = new DynamicBox(this,R.id.content_frame);
+
+        // Setup my box
+        mLoadingView.setLoadingMessage("Loading content...");
+        mLoadingView.setOtherExceptionTitle("Error");
+        mLoadingView.setOtherExceptionMessage("An error has occurred while fetching data, please try again ...");
+        mLoadingView.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadMenuData();
+            }
+        });
+
+        mLoadingView.showLoadingLayout();*/
     }
 
     public List<Menu> getMenuData() {
