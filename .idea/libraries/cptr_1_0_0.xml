@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="cptr-1.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.chanven.lib/cptr/1.0.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.chanven.lib/cptr/1.0.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.chanven.lib/cptr/1.0.0/99cd4b0832c67e5beb25f5928c7b6c89c6d5b70e/cptr-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

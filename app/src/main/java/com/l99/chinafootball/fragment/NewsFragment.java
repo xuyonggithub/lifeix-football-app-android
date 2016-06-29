@@ -3,6 +3,7 @@ package com.l99.chinafootball.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,9 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.chanven.lib.cptr.PtrClassicFrameLayout;
+import com.chanven.lib.cptr.PtrDefaultHandler;
+import com.chanven.lib.cptr.PtrFrameLayout;
+import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
+import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 import com.l99.chinafootball.R;
 import com.l99.chinafootball.adapter.NewsAdapter;
 import com.l99.chinafootball.utils.Url;
@@ -49,9 +56,12 @@ public class NewsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    PtrClassicFrameLayout ptrClassicFrameLayout;
     private RecyclerView mRvNews;
     private List<Menu> mMenuData;
-    private NewsAdapter mAdapter;
+    private NewsAdapter adapter;
+    private RecyclerAdapterWithHF mAdapter;
+    Handler handler = new Handler();
 
     public NewsFragment() {
         // Required empty public constructor
@@ -95,7 +105,9 @@ public class NewsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAdapter = new NewsAdapter();
+        adapter = new NewsAdapter();
+        mAdapter = new RecyclerAdapterWithHF(adapter);
+        ptrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.test_recycler_view_frame);
         mRvNews = (RecyclerView) view.findViewById(R.id.rv_news);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         mRvNews.setLayoutManager(layoutManager);
@@ -103,7 +115,54 @@ public class NewsFragment extends Fragment {
         mRvNews.setItemAnimator(new DefaultItemAnimator());
         mRvNews.setAdapter(mAdapter);
 
-        loadMenuData();
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh(true);
+            }
+        }, 150);
+
+        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+/*                        page = 0;
+                        mData.clear();
+                        for (int i = 0; i < 17; i++) {
+                            mData.add(new String("  RecyclerView item  -" + i));
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        ptrClassicFrameLayout.refreshComplete();
+                        ptrClassicFrameLayout.setLoadMoreEnable(true);*/
+                        loadMenuData();
+                    }
+                }, 2000);
+            }
+        });
+
+        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+
+            @Override
+            public void loadMore() {
+                handler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+/*                        mData.add(new String("  RecyclerView item  - add " + page));
+                        mAdapter.notifyDataSetChanged();
+                        ptrClassicFrameLayout.loadMoreComplete(true);
+                        page++;
+                        Toast.makeText(RecyclerViewActivity.this, "load more complete", Toast.LENGTH_SHORT)
+                                .show();*/
+                        ptrClassicFrameLayout.loadMoreComplete(true);
+                    }
+                }, 1000);
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -157,8 +216,11 @@ public class NewsFragment extends Fragment {
                         Log.i("async", response);
                         mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
                         //mLeftMenu.setData(mMenuData);
-                        mAdapter.setmData((ArrayList<Menu>) mMenuData);
-                        mAdapter.notifyDataSetChanged();
+                        adapter.setmData((ArrayList<Menu>) mMenuData);
+                        adapter.notifyDataSetChanged();
+
+                        ptrClassicFrameLayout.refreshComplete();
+                        ptrClassicFrameLayout.setLoadMoreEnable(true);
                     } catch (ApiException e) {
                         e.printStackTrace();
                     }

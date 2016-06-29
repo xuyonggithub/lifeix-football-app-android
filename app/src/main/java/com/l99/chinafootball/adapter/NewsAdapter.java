@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.l99.chinafootball.R;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import io.swagger.client.model.Menu;
 import io.swagger.client.model.News;
@@ -56,6 +57,12 @@ public class NewsAdapter extends RecyclerView.Adapter{
             super(itemView);
             mNewsThumb = (ImageView) itemView.findViewById(R.id.iv_news_thumb);
             mNewsTitle = (TextView) itemView.findViewById(R.id.tv_news_title);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    com.orhanobut.logger.Logger.e("RecycleView " + getAdapterPosition());
+                }
+            });
         }
     }
 }

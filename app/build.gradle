@@ -42,6 +42,7 @@ android {
         testCompile 'junit:junit:4.12'
         compile 'com.android.support:appcompat-v7:24.0.0'
         compile 'com.android.support:design:24.0.0'
+        compile 'com.chanven.lib:cptr:1.0.0'
         compile project(':android-client')
         compile files('libs/glide-3.6.1.jar')
         compile files('libs/nineoldandroids-2.4.0.jar')
