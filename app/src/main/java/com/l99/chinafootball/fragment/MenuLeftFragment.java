@@ -72,6 +72,7 @@ public class MenuLeftFragment extends Fragment implements AdapterView.OnItemClic
             ((MainActivity) getActivity()).setTitle(menu.getName());
         } else {
             openFragment(HotFragment.class, null);
+            ((MainActivity) getActivity()).setTitle(menu.getName());
         }
     }
 }

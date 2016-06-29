@@ -19,6 +19,7 @@ import android.widget.Button;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
+import com.l99.chinafootball.fragment.HotFragment;
 import com.l99.chinafootball.fragment.MenuLeftFragment;
 import com.l99.chinafootball.utils.Url;
 import com.l99.chinafootball.view.DynamicBox;
@@ -68,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 /*
                         mLoadingView.hideAll();
 */
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", mMenuData.get(0).getName());
+                        bundle.putString("id", mMenuData.get(0).getId());
+                        bundle.putString("url", mMenuData.get(0).getIconUrl());
+                        mLeftMenu.openFragment(HotFragment.class, null);
+                        setTitle(mMenuData.get(0).getName());
                     } catch (ApiException e) {
                         e.printStackTrace();
                     }
