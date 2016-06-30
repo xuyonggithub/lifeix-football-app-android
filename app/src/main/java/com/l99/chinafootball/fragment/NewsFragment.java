@@ -212,7 +212,7 @@ public class NewsFragment extends Fragment {
         MenuApi menuApi = null;
         try {
             menuApi = new MenuApi();
-            menuApi.setBasePath(Url.COMMEN_URL);
+            menuApi.setBasePath(Url.BASE_URL);
             menuApi.getMenuListAsync(new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
