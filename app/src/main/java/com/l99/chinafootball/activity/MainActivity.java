@@ -17,12 +17,17 @@ import android.widget.Button;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
+import com.l99.chinafootball.api.WemediaTopApi;
+import com.l99.chinafootball.bean.WemediaTopBean;
 import com.l99.chinafootball.fragment.HotFragment;
 import com.l99.chinafootball.fragment.MenuLeftFragment;
+import com.l99.chinafootball.getDataListener;
+import com.l99.chinafootball.utils.LogUtil;
 import com.l99.chinafootball.utils.Url;
 import com.l99.chinafootball.view.StateView;
 import com.nineoldandroids.view.ViewHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -32,7 +37,7 @@ import io.swagger.client.ApiInvoker;
 import io.swagger.client.api.MenuApi;
 import io.swagger.client.model.Menu;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, getDataListener<ArrayList<WemediaTopBean>> {
     private DrawerLayout mDrawerLayout;
     List<Menu> mMenuData;
     private MenuLeftFragment mLeftMenu;
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        new WemediaTopApi(this).getTopPosts("visitor",8089916318445l,this);
         initView();
         initEvents();
         loadMenuData();
@@ -96,31 +102,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void OpenRightMenu()
-    {
+    public void OpenRightMenu() {
         mDrawerLayout.openDrawer(Gravity.RIGHT);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED,
                 Gravity.RIGHT);
     }
 
     private void initEvents() {
-        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener()
-        {
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
-            public void onDrawerStateChanged(int newState)
-            {
+            public void onDrawerStateChanged(int newState) {
             }
 
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset)
-            {
+            public void onDrawerSlide(View drawerView, float slideOffset) {
                 View mContent = mDrawerLayout.getChildAt(0);
                 View mMenu = drawerView;
                 float scale = 1 - slideOffset;
                 float rightScale = 0.8f + scale * 0.2f;
 
-                if (drawerView.getTag().equals("LEFT"))
-                {
+                if (drawerView.getTag().equals("LEFT")) {
 
                     float leftScale = 1 - 0.3f * scale;
 
@@ -135,8 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mContent.invalidate();
                     ViewHelper.setScaleX(mContent, rightScale);
                     ViewHelper.setScaleY(mContent, rightScale);
-                } else
-                {
+                } else {
                     ViewHelper.setTranslationX(mContent,
                             -mMenu.getMeasuredWidth() * slideOffset);
                     ViewHelper.setPivotX(mContent, mContent.getMeasuredWidth());
@@ -150,13 +150,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onDrawerOpened(View drawerView)
-            {
+            public void onDrawerOpened(View drawerView) {
             }
 
             @Override
-            public void onDrawerClosed(View drawerView)
-            {
+            public void onDrawerClosed(View drawerView) {
                 mDrawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
             }
@@ -224,4 +222,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public void onLoading() {
+
+    }
+
+    @Override
+    public void onSuccess(ArrayList<WemediaTopBean> wemediaTopBeans) {
+        for(int i = 0; i < wemediaTopBeans.size(); i++) {
+            WemediaTopBean wemediaTopBean = wemediaTopBeans.get(i);
+            LogUtil.e(wemediaTopBean.getTitle());
+        }
+
+    }
+
+    @Override
+    public void onError() {
+
+    }
 }
