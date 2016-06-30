@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MenuApi menuApi = null;
         try {
             menuApi = new MenuApi();
-            menuApi.setBasePath(Url.COMMEN_URL);
+            menuApi.setBasePath(Url.BASE_URL);
             menuApi.getMenuListAsync(new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -103,8 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Gravity.RIGHT);
     }
 
-    private void initEvents()
-    {
+    private void initEvents() {
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener()
         {
             @Override
@@ -164,8 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void initView()
-    {
+    private void initView() {
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolBar);
@@ -224,4 +222,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setTitle(String title) {
         mToolBar.setTitle(title);
     }
+
+
 }
