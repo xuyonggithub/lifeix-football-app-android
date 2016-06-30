@@ -50,10 +50,6 @@ public class WemediaTopApi {
                         wemediaTopBeans = new ArrayList<>();
                         wemediaTopBeans = processTopsPosts(response);
 
-                        for(int i = 0; i < wemediaTopBeans.size(); i++) {
-                            WemediaTopBean wemediaTopBean = wemediaTopBeans.get(i);
-                            LogUtil.e(wemediaTopBean.getTitle());
-                        }
                         listener.onSuccess(wemediaTopBeans);
                     }
                 },
