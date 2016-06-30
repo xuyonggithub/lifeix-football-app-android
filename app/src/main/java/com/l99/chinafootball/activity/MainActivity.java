@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.l99.chinafootball.R;
 import com.l99.chinafootball.fragment.HotFragment;
 import com.l99.chinafootball.fragment.MenuLeftFragment;
+import com.l99.chinafootball.fragment.MenuRightFragment;
 import com.l99.chinafootball.utils.Url;
 import com.l99.chinafootball.view.StateView;
 import com.nineoldandroids.view.ViewHelper;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout mDrawerLayout;
     List<Menu> mMenuData;
     private MenuLeftFragment mLeftMenu;
+    private MenuRightFragment mRightMenu;
     private Handler mHandler;
     private Button mBtnRightMenu;
     private Toolbar mToolBar;
@@ -44,64 +46,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         initView();
         initEvents();
         loadMenuData();
     }
 
-    private void loadMenuData() {
-        MenuApi menuApi = null;
-        try {
-            menuApi = new MenuApi();
-            menuApi.setBasePath(Url.COMMEN_URL);
-            menuApi.getMenuListAsync(new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        Log.i("async", response);
-                        mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
-                        //mLeftMenu.setData(mMenuData);
-                        mLeftMenu.addData(mMenuData.get(0), 0);
-
-                        mStateView.setCurrentState(StateView.STATE_CONTENT);
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("title", mMenuData.get(0).getName());
-                        bundle.putString("id", mMenuData.get(0).getId());
-                        bundle.putString("url", mMenuData.get(0).getIconUrl());
-                        mLeftMenu.openFragment(HotFragment.class, null);
-                        setTitle(mMenuData.get(0).getName());
-                    } catch (ApiException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    mStateView.setCurrentState(StateView.STATE_ERROR);
-                }
-            },"visitor", "app");
-
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void OpenRightMenu()
+    private void initView()
     {
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED,
+        setContentView(R.layout.activity_main);
+
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolBar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        mStateView = (StateView) findViewById(R.id.mStateView);
+        mStateView.setCurrentState(StateView.STATE_LOADING);
+
+        mHandler = new Handler();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setScrimColor(Color.TRANSPARENT);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
                 Gravity.RIGHT);
+
+        mLeftMenu = (MenuLeftFragment) getSupportFragmentManager().findFragmentById(R.id.fg_left_menu);
+        mRightMenu = (MenuRightFragment) getSupportFragmentManager().findFragmentById(R.id.fg_right_menu);
+        mBtnRightMenu = (Button) findViewById(R.id.btn_right_menu);
+        mBtnRightMenu.setOnClickListener(this);
     }
+
 
     private void initEvents()
     {
@@ -164,30 +142,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void initView()
+    private void loadMenuData() {
+        MenuApi menuApi = null;
+        try {
+            menuApi = new MenuApi();
+            menuApi.setBasePath(Url.COMMEN_URL);
+            menuApi.getMenuListAsync(new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        Log.i("async", response);
+                        mMenuData = (List<Menu>) ApiInvoker.deserialize(response, "array", Menu.class);
+                        //mLeftMenu.setData(mMenuData);
+                        mLeftMenu.addData(mMenuData.get(0), 0);
+
+                        mStateView.setCurrentState(StateView.STATE_CONTENT);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", mMenuData.get(0).getName());
+                        bundle.putString("id", mMenuData.get(0).getId());
+                        bundle.putString("url", mMenuData.get(0).getIconUrl());
+                        mLeftMenu.openFragment(HotFragment.class, null);
+                        setTitle(mMenuData.get(0).getName());
+                    } catch (ApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mStateView.setCurrentState(StateView.STATE_ERROR);
+                }
+            },"visitor", "app");
+
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void OpenRightMenu()
     {
-
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolBar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        mStateView = (StateView) findViewById(R.id.mStateView);
-        mStateView.setCurrentState(StateView.STATE_LOADING);
-
-        mHandler = new Handler();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setScrimColor(Color.TRANSPARENT);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+        mDrawerLayout.openDrawer(Gravity.RIGHT);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED,
                 Gravity.RIGHT);
-
-        mLeftMenu = (MenuLeftFragment) getSupportFragmentManager().findFragmentById(R.id.fg_left_menu);
-        mBtnRightMenu = (Button) findViewById(R.id.btn_right_menu);
-        mBtnRightMenu.setOnClickListener(this);
     }
 
     public List<Menu> getMenuData() {

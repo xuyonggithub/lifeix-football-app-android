@@ -1,6 +1,5 @@
 package com.l99.chinafootball.adapter;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -72,11 +71,7 @@ public class LeftMenuListViewAdapter extends BaseAdapter {
             Glide.with(parent.getContext()).load(((MenuItem) item).drawableId).into(viewHolder.imageView);
         else
             Glide.with(parent.getContext()).load(item.getIconUrl()).into(viewHolder.imageView);
-/*        if(selectPosition == position) {
-            viewHolder.textView.setTextColor(context.getResources().getColor(R.color.red));
-        }else {
-            viewHolder.textView.setTextColor(context.getResources().getColor(R.color.dark_gray));
-        }*/
+
         viewHolder.textView.setText(menuList.get(position).getName());
 
         return convertView;
