@@ -1,4 +1,4 @@
-package com.l99.testokhttp.api;
+package com.l99.chinafootball.api;
 
 import android.content.Context;
 
@@ -7,13 +7,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.l99.testokhttp.LogUtil;
-import com.l99.testokhttp.Url;
-import com.l99.testokhttp.bean.ElearningQuizCategoriesTreeBean;
-import com.l99.testokhttp.bean.ElearningQuizPageListBean;
-import com.l99.testokhttp.bean.ElearningTrainingCategoriesTreeBean;
-import com.l99.testokhttp.bean.ElearningTrainingPageListBean;
-import com.l99.testokhttp.bean.ElearningTrainingSubCategoriesBean;
+import com.l99.chinafootball.bean.ElearningQuizCategoriesTreeBean;
+import com.l99.chinafootball.bean.ElearningQuizPageListBean;
+import com.l99.chinafootball.bean.ElearningTrainingCategoriesTreeBean;
+import com.l99.chinafootball.bean.ElearningTrainingPageListBean;
+import com.l99.chinafootball.bean.ElearningTrainingSubCategoriesBean;
+import com.l99.chinafootball.getDataListener;
+import com.l99.chinafootball.utils.LogUtil;
+import com.l99.chinafootball.utils.Url;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,10 +42,11 @@ public class ElearningApi {
         this.context = context;
     }
 
-    public ArrayList<ElearningQuizCategoriesTreeBean> getElearningQuizCategoriesTree(String key) {
+    public void getElearningQuizCategoriesTree(String key , final getDataListener listener) {
 //     http://192.168.50.154:8000/football/elearning/quiz_categories?key=visitor
         url = url +"/quiz_categories"+"?key="+key;
         LogUtil.e(url);
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -53,17 +55,17 @@ public class ElearningApi {
                         LogUtil.e(response);
                         elearningQuizCategoriesTreeBeans = new ArrayList<>();
                         elearningQuizCategoriesTreeBeans = processElearningQuizCategoriesTree(response);
+                        listener.onSuccess(elearningQuizCategoriesTreeBeans);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return elearningQuizCategoriesTreeBeans;
 
     }
 
@@ -122,10 +124,11 @@ public class ElearningApi {
         return elearningQuizCategoriesTreeBeans;
     }
 
-    public ArrayList<ElearningTrainingCategoriesTreeBean> getElearningTrainingCategoriesTree(String key) {
+    public void getElearningTrainingCategoriesTree(String key , final getDataListener listener) {
 //    http://192.168.50.154:8000/football/elearning/training_categories?key=visitor
         url = url +"/training_categories"+"?key="+key;
         LogUtil.e(url);
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -134,19 +137,19 @@ public class ElearningApi {
                         LogUtil.e(response);
                         elearningTrainingCategoriesTreeBeans = new ArrayList<>();
                         elearningTrainingCategoriesTreeBeans = processElearningTrainingCategoriesTree(response);
+                        listener.onSuccess(elearningTrainingCategoriesTreeBeans);
 
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                       listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
 
-        return elearningTrainingCategoriesTreeBeans;
     }
 
     private ArrayList<ElearningTrainingCategoriesTreeBean> processElearningTrainingCategoriesTree(String json) {
@@ -198,10 +201,11 @@ public class ElearningApi {
         return elearningTrainingCategoriesTreeBeans;
     }
 
-    public ArrayList<ElearningQuizPageListBean> getElearningQuizPageList(String key,String categoryId){
+    public void getElearningQuizPageList(String key,String categoryId , final getDataListener listener){
 //      http://192.168.50.154:8000/football/elearning/quiz_categories/elearning_q_fmc2014/pages
         url = url +"/quiz_categories/"+categoryId+"/pages?key="+key;
         LogUtil.e(url);
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -210,17 +214,17 @@ public class ElearningApi {
                         LogUtil.e(response);
                         elearningQuizPageListBeans = new ArrayList<>();
                         elearningQuizPageListBeans = processElearningQuizPageList(response);
+                        listener.onSuccess(elearningQuizPageListBeans);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return  elearningQuizPageListBeans;
 
     }
 
@@ -305,10 +309,11 @@ public class ElearningApi {
         return elearningQuizPageListBeans;
     }
 
-    public ArrayList<ElearningTrainingPageListBean> getElearningTrainingPageList(String key,String categoryId){
+    public void getElearningTrainingPageList(String key,String categoryId ,final getDataListener listener){
 //     http://192.168.50.154:8000/football/elearning/training_categories/elearning_t_fmc2014/pages?key=visitor
         url = url +"/training_categories/"+categoryId+"/pages?key="+key;
         LogUtil.e(url);
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -317,17 +322,17 @@ public class ElearningApi {
                         LogUtil.e(response);
                         elearningTrainingPageListBeans = new ArrayList<>();
                         elearningTrainingPageListBeans = processElearningTrainingPageList(response);
+                        listener.onSuccess(elearningTrainingPageListBeans);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return elearningTrainingPageListBeans;
 
     }
 
@@ -372,10 +377,11 @@ public class ElearningApi {
         return elearningTrainingPageListBeans;
     }
 
-    public ArrayList<ElearningTrainingSubCategoriesBean> getElearningTrainingSubCategories(String key,String categoryId){
+    public void getElearningTrainingSubCategories(String key,String categoryId , final getDataListener listener){
     //http://192.168.50.154:8000/football/elearning/training_categories/elearning_t_fmc2014/subCats
         url = url +"/training_categories/"+categoryId+"/subCats?key="+key;
         LogUtil.e(url);
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -384,18 +390,17 @@ public class ElearningApi {
                         LogUtil.e(response);
                         elearningTrainingSubCategoriesBeans = new ArrayList<>();
                         elearningTrainingSubCategoriesBeans = processElearningTrainingSubCategories(response);
-
+                        listener.onSuccess(elearningTrainingSubCategoriesBeans);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return elearningTrainingSubCategoriesBeans;
 
     }
 

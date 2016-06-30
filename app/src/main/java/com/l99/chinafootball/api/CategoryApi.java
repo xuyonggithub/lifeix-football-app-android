@@ -1,4 +1,4 @@
-package com.l99.testokhttp.api;
+package com.l99.chinafootball.api;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,9 +8,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.l99.testokhttp.bean.CategoryBean;
-import com.l99.testokhttp.LogUtil;
-import com.l99.testokhttp.Url;
+import com.l99.chinafootball.bean.CategoryBean;
+import com.l99.chinafootball.getDataListener;
+import com.l99.chinafootball.utils.LogUtil;
+import com.l99.chinafootball.utils.Url;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,29 +34,32 @@ public class CategoryApi {
         this.context = context;
     }
 
-    public ArrayList<CategoryBean> getCategoryList(String key) {
+    public void getCategoryList(String key ,final getDataListener listener) {
 //       http://192.168.50.154:8000/football/category/categories?key=visitor
+        listener.onLoading();
         url = url +"?key="+key;
         LogUtil.e(url);
-
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         LogUtil.e(response);
+
+                        categoryBeans = new ArrayList<>();
                         categoryBeans = processCategoryList(response);
+                        listener.onSuccess(categoryBeans);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("TAG", error.getMessage(), error);
+                        listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return categoryBeans;
 
     }
 

@@ -1,4 +1,4 @@
-package com.l99.testokhttp.bean;
+package com.l99.chinafootball.bean;
 
 import java.util.ArrayList;
 

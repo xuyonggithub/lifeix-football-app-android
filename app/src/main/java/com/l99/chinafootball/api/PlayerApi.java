@@ -1,4 +1,4 @@
-package com.l99.testokhttp.api;
+package com.l99.chinafootball.api;
 
 import android.content.Context;
 
@@ -7,9 +7,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.l99.testokhttp.LogUtil;
-import com.l99.testokhttp.Url;
-import com.l99.testokhttp.bean.NationalPlayerBean;
+import com.l99.chinafootball.bean.NationalPlayerBean;
+import com.l99.chinafootball.getDataListener;
+import com.l99.chinafootball.utils.LogUtil;
+import com.l99.chinafootball.utils.Url;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +33,11 @@ public class PlayerApi {
         this.context = context;
     }
 
-    public ArrayList<NationalPlayerBean> getNationalPlayer(String key){
+    public void getNationalPlayer(String key ,final getDataListener listener){
 
     // http://192.168.50.154:8000/football/games/players/national?key=visitor
+
+        listener.onLoading();
         url = url +"?key="+key;
         LogUtil.e(url);
         RequestQueue mQueue = Volley.newRequestQueue(context);
@@ -45,18 +48,19 @@ public class PlayerApi {
                         LogUtil.e(response);
                         nationalPlayerBeans = new ArrayList<>();
                         nationalPlayerBeans = processNationalPlayer(response);
+                        listener.onSuccess(nationalPlayerBeans);
                         LogUtil.e(nationalPlayerBeans.size()+"");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return nationalPlayerBeans;
+
     }
 
     private ArrayList<NationalPlayerBean> processNationalPlayer(String json) {

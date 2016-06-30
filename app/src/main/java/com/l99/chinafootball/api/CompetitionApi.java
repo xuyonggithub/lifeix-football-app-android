@@ -1,4 +1,4 @@
-package com.l99.testokhttp.api;
+package com.l99.chinafootball.api;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,9 +8,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.l99.testokhttp.LogUtil;
-import com.l99.testokhttp.Url;
-import com.l99.testokhttp.bean.CompetitionBean;
+import com.l99.chinafootball.bean.CompetitionBean;
+import com.l99.chinafootball.getDataListener;
+import com.l99.chinafootball.utils.LogUtil;
+import com.l99.chinafootball.utils.Url;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,11 +34,11 @@ public class CompetitionApi {
         this.context = context;
     }
 
-    public CompetitionBean getCompetition(String key,long id) {
+    public void getCompetition(String key,long id , final getDataListener listener) {
 //      http://192.168.50.154:8000/football/games/competitionCategory/8089916318445/lastestCompetition?key=visitor
         url = url + "/"+id+"/lastestCompetition"+"?key="+key;
         LogUtil.e(url);
-
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -45,17 +46,18 @@ public class CompetitionApi {
                     public void onResponse(String response) {
                         LogUtil.e(response);
                         competitionBean = processCompetition(response);
+                        listener.onSuccess(competitionBean);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("TAG", error.getMessage(), error);
+                        listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return competitionBean;
 
     }
 

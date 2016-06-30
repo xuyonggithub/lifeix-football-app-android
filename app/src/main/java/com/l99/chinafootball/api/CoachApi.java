@@ -1,4 +1,4 @@
-package com.l99.testokhttp.api;
+package com.l99.chinafootball.api;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,11 +8,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.l99.testokhttp.bean.CoachBean;
-import com.l99.testokhttp.LogUtil;
-import com.l99.testokhttp.bean.NationalCoachBean;
-import com.l99.testokhttp.bean.TeamCoachBean;
-import com.l99.testokhttp.Url;
+import com.l99.chinafootball.bean.CoachBean;
+import com.l99.chinafootball.bean.NationalCoachBean;
+import com.l99.chinafootball.bean.TeamCoachBean;
+import com.l99.chinafootball.getDataListener;
+import com.l99.chinafootball.utils.LogUtil;
+import com.l99.chinafootball.utils.Url;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,11 +40,11 @@ public class CoachApi {
         nationalCoachBeans = new ArrayList<>();
     }
 
-    public CoachBean getCoach(String key,int coachId) {
+    public void getCoach(String key,int coachId,final getDataListener listener) {
 //        http://api.c-f.com:8000/football/games/coaches/{coachId}
         url = url +"/"+coachId+"?key="+key;
         LogUtil.e(url);
-
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -51,6 +52,7 @@ public class CoachApi {
                     public void onResponse(String response) {
                         LogUtil.e(response);
                         coachBean = processCoach(response);
+                        listener.onSuccess(coachBean);
                     }
                 },
                 new Response.ErrorListener() {
@@ -61,7 +63,6 @@ public class CoachApi {
                 });
 
         mQueue.add(stringRequest);
-        return coachBean;
     }
 
     private CoachBean processCoach(String json) {
@@ -176,9 +177,11 @@ public class CoachApi {
     }
 
 
-    public ArrayList<TeamCoachBean> getCoachByTeamCategory(String key,long teamCategoryId) {
+    public void getCoachByTeamCategory(String key,long teamCategoryId,final getDataListener listener) {
 //        http://api.c-f.com:8000/football/games/coaches/teamcategory/{teamCategoryId}
         url = url + "/teamcategory"+"/"+teamCategoryId+"?key="+key;
+        LogUtil.e(url);
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -186,17 +189,18 @@ public class CoachApi {
                     public void onResponse(String response) {
                         Log.e("TAG", response);
                         teamCoachBeans = processCoachByTeamCategory(response);
+                        listener.onSuccess(teamCoachBeans);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("TAG", error.getMessage(), error);
+                        listener.onError();
                     }
         });
 
         mQueue.add(stringRequest);
-        return teamCoachBeans;
 
     }
 
@@ -235,22 +239,20 @@ public class CoachApi {
         return teamCoachBeans;
     }
 
-    public ArrayList<NationalCoachBean> getNationalCoach(String key){
+    public void getNationalCoach(String key,final getDataListener listener){
 //        http://api.c-f.com:8000/football/games/coaches/national
 
         url = url +"/national"+"?key="+key;
         LogUtil.e(url);
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         LogUtil.e(response);
-                        String json = response;
-                        LogUtil.e(json);
-
-                        nationalCoachBeans = processNationCoach(json);
-                        LogUtil.e(nationalCoachBeans.size()+"");
+                        nationalCoachBeans = processNationCoach(response);
+                        listener.onSuccess(nationalCoachBeans);
 
                     }
                 },
@@ -262,7 +264,6 @@ public class CoachApi {
                 });
 
         mQueue.add(stringRequest);
-        return nationalCoachBeans;
     }
 
     private ArrayList<NationalCoachBean> processNationCoach(String json) {

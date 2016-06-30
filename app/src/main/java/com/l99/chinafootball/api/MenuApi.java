@@ -1,4 +1,4 @@
-package com.l99.testokhttp.api;
+package com.l99.chinafootball.api;
 
 import android.content.Context;
 
@@ -7,9 +7,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.l99.testokhttp.LogUtil;
-import com.l99.testokhttp.Url;
-import com.l99.testokhttp.bean.MenuBean;
+import com.l99.chinafootball.bean.MenuBean;
+import com.l99.chinafootball.getDataListener;
+import com.l99.chinafootball.utils.LogUtil;
+import com.l99.chinafootball.utils.Url;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,10 +34,11 @@ public class MenuApi {
         this.context = context;
     }
 
-    public ArrayList<MenuBean> getMenuList(String key,String platform){
+    public void getMenuList(String key,String platform,final getDataListener listener){
         //http://192.168.50.154:8000/football/category/menus/app?key=visitor
         url = url +"/"+platform+"?key="+key;
         LogUtil.e(url);
+        listener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -45,17 +47,18 @@ public class MenuApi {
                         LogUtil.e(response);
                         menuBeans = new ArrayList<>();
                         menuBeans = processMenuList(response);
+                        listener.onSuccess(menuBeans);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                       listener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return menuBeans;
+
     }
 
     private ArrayList<MenuBean> processMenuList(String json) {

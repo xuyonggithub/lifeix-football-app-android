@@ -1,4 +1,4 @@
-package com.l99.testokhttp.api;
+package com.l99.chinafootball.api;
 
 import android.content.Context;
 
@@ -7,9 +7,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.l99.testokhttp.LogUtil;
-import com.l99.testokhttp.Url;
-import com.l99.testokhttp.bean.CompetitionCategoryBean;
+import com.l99.chinafootball.bean.CompetitionCategoryBean;
+import com.l99.chinafootball.getDataListener;
+import com.l99.chinafootball.utils.LogUtil;
+import com.l99.chinafootball.utils.Url;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,12 +37,12 @@ public class CompetitionCategoryApi {
         this.context = context;
     }
 
-    public ArrayList<CompetitionCategoryBean> getCompetitionCategories(String key) {
+    public void getCompetitionCategories(String key, final getDataListener lisener) {
 //      http://192.168.50.154:8000/football/games/competitionCategory?key=visitor
 
         url = url +"?key="+key;
         LogUtil.e(url);
-
+        lisener.onLoading();
         RequestQueue mQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -50,17 +51,18 @@ public class CompetitionCategoryApi {
                         LogUtil.e(response);
                         competitionCategoryBeans = new ArrayList<>();
                         competitionCategoryBeans = processCompetitionCategories(response);
+                        lisener.onSuccess(competitionCategoryBeans);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        lisener.onError();
                     }
                 });
 
         mQueue.add(stringRequest);
-        return competitionCategoryBeans;
+
     }
 
     private ArrayList<CompetitionCategoryBean> processCompetitionCategories(String json) {
